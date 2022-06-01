@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml">
+
+
+    
+    <ui:define name="content">
+        <div class="container mt-2">
+            <h:form>
+                <h:commandButton styleClass="btn btn-secondary" action="/index" value="&larr; Home"/>
+            </h:form>
+            <hr/>
+
+            <h:form id="notlar-form">
+                <div class="mb-3">
+                    <label class="form-label">Ogrenci Numarası:</label>
+                     
+                    <h:selectOneMenu styleClass="form-control" value="#{notlarBean.entity.ogrencino}" converter="ogrenciConverter" >
+                        <f:selectItems  value="#{ogrenciBean.list}" var="o" itemValue="#{o}" itemLabel="#{o.adsoyad}" />
+                    </h:selectOneMenu>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ders Adı: </label>
+                    
+                    <h:selectOneMenu styleClass="form-control" value="#{notlarBean.entity.derskodu}" converter="dersConverter">
+                        <f:selectItems  value="#{dersBean.list}" var="d" itemValue="#{d}" itemLabel="#{d.dersadı}" />
+                    </h:selectOneMenu>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Vize : </label>
+                    <h:inputText styleClass="form-control" value="#{notlarBean.entity.vizenot}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Final: </label>
+                    <h:inputText styleClass="form-control" value="#{notlarBean.entity.finalnot}" />
+                </div>
+
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{notlarBean.entity.id==0}" action="#{notlarBean.create()}" value="Create">
+                    <f:ajax execute="ders-form" render="ders-form ders-table"/>
+                </h:commandButton>
+                <br/>
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{notlarBean.entity.id!=0}" action="#{notlarBean.update()}" value="Update">
+                    <f:ajax execute="ders-form" render="ders-form ders-table"/>
+                </h:commandButton>
+                <br/>
+                    
+            </h:form>
+            <hr/>
+            <h:form id="notlar-table">
+                 <pre>Page #{notlarBean.page} of #{notlarBean.pageCount}</pre>
+                <div class="buton-group">
+                    <h:commandButton action="#{notlarBean.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
+                    <h:commandButton action="#{notlarBean.next()}" value="Next" styleClass="btn btn-outline-dark"/><br/><br/>
+                </div>
+                 
+                <h:dataTable styleClass="table table-striped table-hover"  value="#{notlarBean.list}" var="entity">
+
+                    <h:column>
+                        <f:facet name="header">OGRENCİ NUMARASI</f:facet>
+                            #{entity.ogrencino.numara}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">DERS ADI</f:facet>
+                            #{entity.derskodu.dersadı}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">VİZE</f:facet>
+                            #{entity.vizenot}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">FİNAL</f:facet>
+                            #{entity.finalnot}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">ORTALAMA</f:facet>
+                            #{entity.ortalama}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">DURUM</f:facet>
+                            #{entity.durum}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">ADMINISTRATOR</f:facet>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{notlarBean.delete(entity)}" value="Delete">
+                            <f:ajax execute="notlar-form" render="notlar-form notlar-table"/>
+                        </h:commandButton>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{notlarBean.setEntity(entity)}" value="Update">
+                            <f:ajax execute="notlar-form" render="notlar-form notlar-table"/>
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+
+

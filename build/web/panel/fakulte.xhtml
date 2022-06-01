@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml">
+
+
+
+    <ui:define name="content">
+        <div class="container mt-2">
+            <h:form>
+                <h:commandButton styleClass="btn btn-secondary" action="/index" value="&larr; Home"/>
+            </h:form>
+            <hr/>
+
+            <h:form id="fakulte-form">
+                <div class="mb-3">
+                    <label class="form-label">Fakulte Ad:</label>
+                    <h:inputText styleClass="form-control" value="#{fakulteBean.entity.fakultead}" /><br/><br/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Fakulte Kod: </label>
+                    <h:inputText styleClass="form-control" value="#{fakulteBean.entity.fakultekod}" /><br/>
+                </div>
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{fakulteBean.entity.id==0}" action="#{fakulteBean.create()}" value="Create">
+                     <f:ajax execute="fakulte-form" render="fakulte-form fakulte-table"/>
+                </h:commandButton>
+                <h:commandButton styleClass="btn btn-secondary"  rendered="#{fakulteBean.entity.id!=0}" action="#{fakulteBean.update()}" value="Update">
+                     <f:ajax execute="fakulte-form" render="fakulte-form fakulte-table"/>
+                </h:commandButton>
+            </h:form>
+            <hr/>
+            
+            
+            
+            <h:form id="fakulte-table">
+
+                <pre>Page #{fakulteBean.page} of #{fakulteBean.pageCount}</pre>
+                <div class="buton-group">
+                    <h:commandButton action="#{fakulteBean.previous()}" value="Previous" styleClass="btn btn-outline-dark">
+                        <f:ajax execute="fakulte-form" render="fakulte-form fakulte-table"/>
+                    </h:commandButton>
+                    <h:commandButton action="#{fakulteBean.next()}" value="Next" styleClass="btn btn-outline-dark">
+                        <f:ajax execute="fakulte-form" render="fakulte-form fakulte-table"/>
+                    </h:commandButton>
+                    <br/><br/>
+                </div>
+
+                <h:dataTable styleClass="table table-striped table-hover"  value="#{fakulteBean.list}" var="entity">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                            #{entity.id}
+                    </h:column>
+                    
+                    <h:column>
+                        <f:facet name="header">FAKÜLTE AD</f:facet>
+                            #{entity.fakultead}
+                    </h:column>
+                    
+                    <h:column>
+                        <f:facet name="header">FAKULTE KOD</f:facet>
+                            #{entity.fakultekod}
+                    </h:column>
+                    
+                    <h:column>
+                        <f:facet name="header">ADMINISTRATOR</f:facet>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{fakulteBean.delete(entity)}" value="Delete">
+                            <f:ajax execute="fakulte-form" render="fakulte-form fakulte-table "/>
+                        </h:commandButton>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{fakulteBean.setEntity(entity)}" value="Update">
+                             <f:ajax execute="fakulte-form" render="fakulte-form fakulte-table "/>
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+

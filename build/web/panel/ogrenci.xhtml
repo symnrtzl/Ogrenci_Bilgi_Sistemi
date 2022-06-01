@@ -1,0 +1,125 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml">
+
+    
+    <ui:define name="content">
+        <div class="container mt-2">
+            <h:form>
+                <h:commandButton styleClass="btn btn-secondary" action="/index" value="&larr; Home"/>
+            </h:form>
+            <hr/>
+
+            <h:form id="ogrenci-form">
+                <div class="mb-3">
+                    <label class="form-label">Ogrenci Ad-Soyad: </label>
+                    <h:inputText styleClass="form-control" value="#{ogrenciBean.entity.adsoyad}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ogrenci Numara: </label>
+                    <h:inputText styleClass="form-control" value="#{ogrenciBean.entity.numara}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ogrenci eposta:</label>
+                     <h:inputText styleClass="form-control" value="#{ogrenciBean.entity.eposta}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ogrenci Cinsiyet: </label>
+                    <h:inputText styleClass="form-control" value="#{ogrenciBean.entity.cinsiyet}" /><br/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Fakulte:</label>
+                     
+                    <h:selectOneMenu styleClass="form-select" value="#{ogrenciBean.entity.fakulte}"  converter="fakulteConverter">
+                        <f:selectItems  value="#{fakulteBean.list}" var="fakulte" itemValue="#{fakulte}" itemLabel="#{fakulte.fakultead}"/>
+                    </h:selectOneMenu>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Bolum:</label>
+                     
+                    <h:selectOneMenu styleClass="form-select" value="#{ogrenciBean.entity.bolum}" converter="bolumConverter" >
+                        <f:selectItems  value="#{bolumBean.list}" var="bolum" itemValue="#{bolum}" itemLabel="#{bolum.bolumad}" />
+                    </h:selectOneMenu>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Dersler: </label>
+                    
+                    <h:selectManyMenu styleClass="form-select"  value="#{ogrenciBean.entity.dersler}" >
+                        <f:selectItems  value="#{dersBean.list}" var="d" itemValue="#{d}" itemLabel="#{d.dersadı}" />
+                    </h:selectManyMenu>
+                </div>
+                
+                
+                
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{ogrenciBean.entity.id==0}" action="#{ogrenciBean.create()}" value="Create">
+                    <f:ajax execute="ogrenci-form" render="ogrenci-form ogrenci-table"/>
+                </h:commandButton>
+                <br/>
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{ogrenciBean.entity.id!=0}" action="#{ogrenciBean.update()}" value="Update">
+                        <f:ajax execute="ogrenci-form" render="ogrenci-form ogrenci-table"/>
+                </h:commandButton>
+                    <br/>
+            </h:form>
+            <hr/>
+            <h:form id="ogrenci-table">
+                 <pre>Page #{ogrenciBean.page} of #{ogrenciBean.pageCount}</pre>
+                <div class="buton-group">
+                    <h:commandButton action="#{ogrenciBean.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
+                    <h:commandButton action="#{ogrenciBean.next()}" value="Next" styleClass="btn btn-outline-dark"/><br/><br/>
+                </div>
+                 
+                <h:dataTable styleClass="table table-striped table-hover"  value="#{ogrenciBean.list}" var="entity">
+
+                    <h:column>
+                        <f:facet name="header">AD-SOYAD</f:facet>
+                            #{entity.adsoyad}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">NUMARA</f:facet>
+                            #{entity.numara}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">EPOSTA</f:facet>
+                            #{entity.eposta}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">CİNSİYET</f:facet>
+                            #{entity.cinsiyet}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">BOLUM</f:facet>
+                            #{entity.bolum.bolumad}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">FAKULTE</f:facet>
+                            #{entity.fakulte.fakultead}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">DERSLER</f:facet>
+                        <ul>
+                            <ui:repeat value="#{entity.dersler}" var="k">
+                                <li>#{k.dersadı}</li>
+                            </ui:repeat>
+                        </ul>
+
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">ADMINISTRATOR</f:facet>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{ogrenciBean.delete(entity)}" value="Delete">
+                            <f:ajax execute="ogrenci-form" render="ogrenci-form ogrenci-table"/>
+                        </h:commandButton>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{ogrenciBean.setEntity(entity)}" value="Update">
+                            <f:ajax execute="ogrenci-form" render="ogrenci-form ogrenci-table"/>
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+

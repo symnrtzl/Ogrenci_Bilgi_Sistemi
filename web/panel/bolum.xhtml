@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml">
+    
+
+    <ui:define name="content">
+        <div class="container mt-2">
+            <h:form>
+                <h:commandButton styleClass="btn btn-secondary" action="/index" value="&larr; Home"/>
+            </h:form>
+            <hr/>
+
+            <h:form id="bolum-form">
+                <div class="mb-3">
+                    <label class="form-label">Fakulte</label>
+                    <h:selectOneMenu styleClass="form-select" value="#{bolumBean.entity.fakulte}"  converter="fakulteConverter">
+                        <f:selectItems  value="#{fakulteBean.list}" var="fakulte" itemValue="#{fakulte}" itemLabel="#{fakulte.fakultead}"/>
+                    </h:selectOneMenu>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Bolum Ad</label>
+                    <h:inputText styleClass="form-control" value="#{bolumBean.entity.bolumad}" /><br/>
+                </div>
+                <div class="m-3">
+                    <label class="form-label">Bolum Kod</label>
+                    <h:inputText styleClass="form-control" value="#{bolumBean.entity.bolumkod}" /><br/>
+                </div>
+
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{bolumBean.entity.id==0}" action="#{bolumBean.create()}" value="Create">
+                    <f:ajax execute="bolum-form" render="bolum-form bolum-table"/>
+                </h:commandButton>
+                    <br/>
+                    <h:commandButton styleClass="btn btn-secondary"  rendered="#{bolumBean.entity.id!=0}" action="#{bolumBean.update()}" value="Update">
+                        <f:ajax execute="bolum-form" render="bolum-form bolum-table"/>
+                    </h:commandButton>
+                    <br/>
+
+            </h:form>
+            <hr/>
+            <h:form id="bolum-table" >
+                <pre>Page #{bolumBean.page} of #{bolumBean.pageCount}</pre>
+                <div class="buton-group">
+                    <h:commandButton action="#{bolumBean.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
+                    <h:commandButton action="#{bolumBean.next()}" value="Next" styleClass="btn btn-outline-dark"/><br/><br/>
+                </div>
+                <h:dataTable styleClass="table table-striped table-hover"  value="#{bolumBean.list}" var="entity">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                            #{entity.id}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">FAKULTE</f:facet>
+                            #{entity.fakulte.fakultead}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">BOLUMAD</f:facet>
+                            #{entity.bolumad}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">BOLUMKODU</f:facet>
+                            #{entity.bolumkod}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">ADMINISTRATOR</f:facet>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{bolumBean.delete(entity)}" value="Delete">
+                            <f:ajax execute="bolum-form" render="bolum-form bolum-table"/>
+                        </h:commandButton>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{bolumBean.setEntity(entity)}" value="Update">
+                            <f:ajax execute="bolum-form" render="bolum-form bolum-table"/>
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>

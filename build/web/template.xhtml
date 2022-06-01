@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>OgrenciBilgiSistemi</title>
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>
+    </h:head>
+    <h:body>
+        <div class="container mt-4">
+            <ui:insert name="menu" >
+                <h:form>
+                    <nav class="navbar navbar-expand-lg bg-light">
+                        <div class="container-fluid">
+                            <h:commandLink action="/index" value="ÖĞRENCİ BİLGİ SİSTEMİ" styleClass="navbar-brand" />
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                    <li class="nav-item">
+                                        <h:commandLink styleClass="nav-link " action="/panel/fakulte" value="Fakulte"/>
+                                    </li>
+                                    <li class="nav-item">
+                                        <h:commandLink styleClass="nav-link" action="/panel/bolum" value="Bolum"/>
+                                    </li>
+                                    <li class="nav-item">
+                                        <h:commandLink styleClass="nav-link" action="/panel/akademisyen" value="Akademisyen"/>
+                                    </li>
+                                    <li class="nav-item">
+                                        <h:commandLink styleClass="nav-link" action="/panel/ders" value="Ders"/>
+                                    </li>
+                                    <li class="nav-item">
+                                        <h:commandLink styleClass="nav-link" action="/panel/ogrenci" value="Ogrenci"/>
+                                    </li>
+                                    <li class="nav-item">
+                                        <h:commandLink styleClass="nav-link" action="/panel/notlar" value="Notlar"/>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </h:form>
+            </ui:insert>
+            
+            <ui:insert name="content">
+                Default content
+            </ui:insert>
+        </div>
+
+    </h:body>
+</html>
+
+

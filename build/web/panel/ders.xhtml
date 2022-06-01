@@ -1,0 +1,102 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml">
+
+ 
+    
+    <ui:define name="content">
+        <div class="container mt-2">
+            <h:form>
+                <h:commandButton styleClass="btn btn-secondary" action="/index" value="&larr; Home"/>
+            </h:form>
+            <hr/>
+
+
+            <h:form id="ders-form">
+                <div class="mb-3">
+                    <label class="form-label">Ders Kodu : </label>
+                    <h:inputText styleClass="form-control" value="#{dersBean.entity.derskodu}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ders  Adı: </label>
+                    <h:inputText styleClass="form-control" value="#{dersBean.entity.dersadı}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Ders  Kredisi: </label>
+                    <h:inputText styleClass="form-control" value="#{dersBean.entity.kredi}" />
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Bolum: </label>
+
+                    <h:selectOneMenu styleClass="form-select" value="#{dersBean.entity.bolum}" converter="bolumConverter" >
+                        <f:selectItems  value="#{bolumBean.list}" var="b" itemValue="#{b}" itemLabel="#{b.bolumad}" />
+                    </h:selectOneMenu>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Akademisyen:</label>
+                    <h:selectOneMenu  styleClass="form-select" value="#{dersBean.entity.akademisyen}" converter="akademisyenConverter" >
+                        <f:selectItems  value="#{akademisyenBean.list}" var="a" itemValue="#{a}" itemLabel="#{a.ad}" />
+                    </h:selectOneMenu>
+                </div>
+
+
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{dersBean.entity.id==0}" action="#{dersBean.create()}" value="Create">
+                    <f:ajax execute="ders-form" render="ders-form ders-table"/>
+                </h:commandButton>
+                <br/>
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{dersBean.entity.id!=0}" action="#{dersBean.update()}" value="Update">
+                    <f:ajax execute="ders-form" render="ders-form ders-table"/>
+                </h:commandButton>
+                    <br/>
+            </h:form>
+            <hr/>
+            <h:form id="ders-table">
+                
+                 <pre>Page #{dersBean.page} of #{dersBean.pageCount}</pre>
+                <div class="buton-group">
+                    <h:commandButton action="#{dersBean.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
+                    <h:commandButton action="#{dersBean.next()}" value="Next" styleClass="btn btn-outline-dark"/><br/><br/>
+                </div>
+
+                <h:dataTable styleClass="table table-striped table-hover"  value="#{dersBean.list}" var="entity">
+
+                    <h:column>
+                        <f:facet name="header">DERS KODU</f:facet>
+                            #{entity.derskodu}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">DERS ADI</f:facet>
+                            #{entity.dersadı}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">DERS KREDİSİ</f:facet>
+                            #{entity.kredi}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">BOLUM</f:facet>
+                            #{entity.bolum.bolumad}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">AKADEMİSYEN</f:facet>
+                            #{entity.akademisyen.ad}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">ADMINISTRATOR</f:facet>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{dersBean.delete(entity)}" value="Delete">
+                            <f:ajax execute="ders-form" render="ders-form ders-table"/>
+                        </h:commandButton>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{dersBean.setEntity(entity)}" value="Update">
+                            <f:ajax execute="ders-form" render="ders-form ders-table"/>
+                        </h:commandButton>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+

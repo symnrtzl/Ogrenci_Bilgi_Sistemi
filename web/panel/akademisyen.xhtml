@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="/template.xhtml">
+
+    
+    
+    <ui:define name="content">
+        <div class="container mt-2">
+            <h:form>
+                <h:commandButton styleClass="btn btn-secondary" action="/index" value="&larr; Home"/>
+            </h:form>
+            <hr/>
+
+            <h:form>
+                <div class="mb-3">
+                    <label class="form-label">Akademisyen Ad-Soyad:</label>
+                    <h:inputText styleClass="form-control" value="#{akademisyenBean.entity.ad}" /><br/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Akademisyen email:</label>
+                    <h:inputText styleClass="form-control" value="#{akademisyenBean.entity.email}" /><br/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Akademisyen numara:</label>
+                    <h:inputText styleClass="form-control" value="#{akademisyenBean.entity.numara}" /><br/>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Bolum: </label>
+
+                    <h:selectOneMenu  styleClass="form-control" value="#{akademisyenBean.entity.bolum}" converter="bolumConverter" >
+                        <f:selectItems  value="#{bolumBean.list}" var="bolum" itemValue="#{bolum}" itemLabel="#{bolum.bolumad}" />
+                    </h:selectOneMenu>
+                </div>
+
+
+
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{akademisyenBean.entity.id==0}" action="#{akademisyenBean.create()}" value="Create"/><br/>
+                <h:commandButton styleClass="btn btn-secondary"   rendered="#{akademisyenBean.entity.id!=0}" action="#{akademisyenBean.update()}" value="Update"/><br/>
+            </h:form>
+            <hr/>
+            <h:form id="akademisyen-table">
+                
+                <pre>Page #{akademisyenBean.page} of #{akademisyenBean.pageCount}</pre>
+                <div class="buton-group">
+                    <h:commandButton action="#{akademisyenBean.previous()}" value="Previous" styleClass="btn btn-outline-dark"/>
+                    <h:commandButton action="#{akademisyenBean.next()}" value="Next" styleClass="btn btn-outline-dark"/><br/><br/>
+                </div>
+
+                <h:dataTable styleClass="table table-striped table-hover"  value="#{akademisyenBean.list}" var="entity">
+
+                    <h:column>
+                        <f:facet name="header">AD-SOYAD</f:facet>
+                            #{entity.ad}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">EMAİL</f:facet>
+                            #{entity.email}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">NUMARA</f:facet>
+                            #{entity.numara}
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">BOLUM</f:facet>
+                            #{entity.bolum.bolumad}
+                    </h:column>
+
+                    <h:column>
+                        <f:facet name="header">ADMINISTRATOR</f:facet>
+                        <h:commandButton styleClass="btn btn-danger btn-sm" action="#{akademisyenBean.delete(entity)}" value="Delete"/>
+                        <h:commandButton styleClass="btn btn-primary btn-sm" action="#{akademisyenBean.setEntity(entity)}" value="Update"/>
+                    </h:column>
+                </h:dataTable>
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+
+
